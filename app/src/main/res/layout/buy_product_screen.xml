@@ -52,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            app:cardElevation="10dp">
+            app:cardElevation="10dp"
+            app:cardCornerRadius="5dp">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -63,7 +64,8 @@
                 <ImageView
                     android:id="@+id/productImage"
                     android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitXY"
                     android:layout_gravity="center"
                     android:src="@drawable/j5" />
 
@@ -81,19 +83,23 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:text="Name"
+                        android:textSize="14sp"
                         android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/tvProductPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="3dp"
                         android:text="Price"
-                        android:textColor="@color/black" />
+                        android:textColor="#C30006"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/tvProductQty"
@@ -108,8 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/tvProductQty"
+                            android:layout_margin="5dp"
                             android:orientation="horizontal"
                             android:weightSum="1">
 

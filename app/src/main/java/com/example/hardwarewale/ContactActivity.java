@@ -24,6 +24,14 @@ public class ContactActivity extends AppCompatActivity {
         binding = ContactUsBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         Intent in = getIntent();
+
+        binding.backPress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         binding.ivContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

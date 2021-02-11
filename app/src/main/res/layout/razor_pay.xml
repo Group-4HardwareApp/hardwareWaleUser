@@ -1,67 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/yellow">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/backPress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:src="@drawable/arrow_back_icon" />
+
+            <TextView
+                android:id="@+id/tvAppName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.8"
+                android:gravity="center_vertical"
+                android:text="Payment Gateway"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="20dp"
         android:gravity="center"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="110dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_alignParentBottom="true"
-                android:background="#E2E2E2"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="35dp"
-                    android:paddingBottom="0dp"
-                    android:text="Order #RZP42"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!--ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/app_logo" /-->
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f2f2f2"
+            android:layout_margin="10dp"
+            android:background="@color/white"
             android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="15dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:paddingTop="0dp"
-                android:paddingBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:text="Razorpay"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:paddingTop="0dp"
+                android:layout_marginTop="10dp"
                 android:paddingBottom="0dp"
                 android:text="INR 1.00"
                 android:textSize="12sp" />
@@ -70,11 +77,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="0dp"
                 android:text="Transaction is for testing purpose and your deducted amount will get refunded in 3-5 business days "
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="12sp"
@@ -86,30 +90,43 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center_horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="0dp"
                 android:text="Privacy Policy"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="12sp"
-                android:textStyle="italic" />
+                android:textColor="@color/dark_blue"
+                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/btn_pay"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnPay"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@color/yellow"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Continue"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etAddress"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:orientation="horizontal"
+                app:cardBackgroundColor="@color/yellow"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Continue"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <TextView
@@ -126,4 +143,4 @@
             android:textSize="12sp"
             android:textStyle="italic" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

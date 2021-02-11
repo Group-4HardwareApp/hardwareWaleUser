@@ -2,7 +2,9 @@ package com.example.hardwarewale.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,17 +59,29 @@ public class OrderDetailAddCommentAdapter extends RecyclerView.Adapter<OrderDeta
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderDetailViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final OrderDetailViewHolder holder, int position) {
         final OrderItems item = itemList.get(position);
         holder.binding.tvProductName.setText("" + item.getName());
         holder.binding.tvProductName.setTextColor(context.getResources().getColor(R.color.black));
         holder.binding.tvProductPrice.setText("₹ " + item.getPrice());
-        holder.binding.tvProductPrice.setTextColor(context.getResources().getColor(R.color.black));
+        //holder.binding.tvProductPrice.setTextColor(context.getResources().getColor(R.color.red));
         holder.binding.tvProductQty.setText("Qty : " + item.getQty());
         holder.binding.tvProductQty.setTextColor(context.getResources().getColor(R.color.black));
         Picasso.get().load(item.getImageUrl()).placeholder(R.drawable.default_photo_icon).into(holder.binding.ivProductImage);
 
+        SpannableString content = new SpannableString("Add Comment");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        holder.binding.tvAddComment.setText(content);
         holder.binding.tvAddComment.setVisibility(View.VISIBLE);
+
+        getCommnets();
+        if (flag == 1) {
+            SpannableString content1 = new SpannableString("Update comment");
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            holder.binding.tvAddComment.setText(content1);
+
+        }
+
         holder.binding.tvAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,62 +120,6 @@ public class OrderDetailAddCommentAdapter extends RecyclerView.Adapter<OrderDeta
                         Toast.makeText(context, "" + t, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                CommentService.CommentApi api = CommentService.getCommentApiInstance();
-                Call<ArrayList<Comment>> call2 = api.getCommentOfProduct(productId);
-                call2.enqueue(new Callback<ArrayList<Comment>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
-                        if (response.isSuccessful()) {
-                            ArrayList<Comment> commentList = response.body();
-                            for (Comment c : commentList) {
-                                if (userId.equals(c.getUserId())) {
-                                    commentId = c.getCommentId();
-                                    flag = 1;
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
-
-                    }
-                });
-
-                if (flag == 1) {
-                    Comment comment = new Comment();
-                    comment.setUserName(userName);
-                    comment.setTimestamp(timestamp);
-                    comment.setComment(coment);
-                    comment.setDate(date);
-                    comment.setRating(comment.getRating());
-                    comment.setUserId(userId);
-                    comment.setUserImg(userImag);
-                    Call<Comment> call3 = api.updateComment(comment,commentId);
-                    call3.enqueue(new Callback<Comment>() {
-                        @Override
-                        public void onResponse(Call<Comment> call, Response<Comment> response) {
-                            if(response.isSuccessful()){
-                                Comment c = response.body();
-                            }
-                            Log.e("response code","===>"+response.code());
-                        }
-
-                        @Override
-                        public void onFailure(Call<Comment> call, Throwable t) {
-                           Log.e("error","==>"+t);
-                        }
-                    });
-                }
-
-                ivCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ab.dismiss();
-                    }
-                });
-
                 btnComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -175,7 +133,10 @@ public class OrderDetailAddCommentAdapter extends RecyclerView.Adapter<OrderDeta
                         comment.setTimestamp(timestamp);
                         comment.setComment(coment);
                         comment.setDate(date);
-                        comment.setRating(comment.getRating());
+                        Float rating = Float.valueOf((Float) ratingBar.getRating());
+                        comment.setRating(rating);
+                        Log.e("Rating", "=====>" + rating);
+
                         comment.setUserId(userId);
                         comment.setUserImg(userImag);
                         comment.setUserName(userName);
@@ -187,8 +148,6 @@ public class OrderDetailAddCommentAdapter extends RecyclerView.Adapter<OrderDeta
                                 if (response.code() == 200) {
                                     Comment comment = response.body();
                                     ab.dismiss();
-                                    Log.e("rating", "==>" + rating);
-                                    Log.e("text", "==>" + text);
                                     Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -200,7 +159,39 @@ public class OrderDetailAddCommentAdapter extends RecyclerView.Adapter<OrderDeta
                         });
                     }
                 });
+
+                ivCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ab.dismiss();
+                    }
+                });
                 ab.show();
+            }
+        });
+    }
+
+    private void getCommnets() {
+        CommentService.CommentApi api = CommentService.getCommentApiInstance();
+        Call<ArrayList<Comment>> call2 = api.getCommentOfProduct(productId);
+        call2.enqueue(new Callback<ArrayList<Comment>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Comment> commentList = response.body();
+                    for (Comment c : commentList) {
+                        commentId = c.getCommentId();
+                        if (userId.equals(c.getUserId())) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
+
             }
         });
     }

@@ -34,8 +34,8 @@
                     android:id="@+id/tvAppName"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.7"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="0.7"
                     android:gravity="center_vertical"
                     android:text="View profile"
                     android:textColor="@color/black"
@@ -47,16 +47,17 @@
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:cardElevation="10dp">
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp">
 
             <ImageView
                 android:id="@+id/ivUserImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_margin="5dp"
                 android:src="@drawable/j5" />
 
@@ -66,26 +67,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            app:cardElevation="10dp">
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="7dp"
                 android:orientation="horizontal"
-                android:padding="10dp"
+                android:padding="7dp"
                 android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.33"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="7dp"
                         android:text="Name"
                         android:textColor="@color/black" />
 
@@ -107,6 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
+                        android:layout_marginBottom="7dp"
                         android:text="Address "
                         android:textColor="@color/black" />
 
@@ -115,7 +119,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.6"
                     android:orientation="vertical"
                     android:paddingLeft="5dp">
 
@@ -124,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignRight="@+id/brand"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="7dp"
                         android:text="Name" />
 
                     <TextView
@@ -146,6 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
+                        android:layout_marginBottom="7dp"
                         android:text="Address" />
 
                 </LinearLayout>
@@ -164,133 +169,115 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="7dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="7dp"
             android:gravity="center"
-
+            android:orientation="horizontal"
             android:weightSum="1">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="22dp"
-                android:layout_marginLeft="3dp"
-                android:layout_weight="0.33"
+                android:layout_margin="5dp"
+                android:layout_weight="0.3"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/rrDilevered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/dileverd_circle"
-                    android:padding="8.5dp">
-
-                    <TextView
-                        android:id="@+id/tvDelivered"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/ivAddToCart"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginTop="4dp"
-                        android:text="0"
-                        android:textColor="@color/light_green"
-                        android:textSize="20sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tvDeliveredp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rrDilevered"
-                    android:layout_alignRight="@+id/ivAddToCart"
-                    android:layout_marginTop="4dp"
-                    android:text="Delivered "
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="22dp"
-                android:layout_marginLeft="3dp"
-                android:layout_weight="0.33"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:id="@+id/rrCancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/cancel_circle"
-                    android:padding="8.5dp">
-
-                    <TextView
-                        android:id="@+id/tvCancelled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/ivBuy"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginTop="4dp"
-                        android:text="0"
-                        android:textColor="@color/red"
-                        android:textSize="20sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tvCancelledp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rrCancel"
-                    android:layout_alignRight="@+id/ivBuy"
-                    android:layout_marginTop="4dp"
-                    android:text="Cancelled"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="22dp"
-                android:layout_marginLeft="3dp"
-                android:layout_weight="0.33"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:id="@+id/rrOnway"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/onway_circle"
-                    android:padding="8.5dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="50dp">
 
                     <TextView
                         android:id="@+id/tvOnway"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/ivBuy"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
                         android:text="0"
-                        android:textColor="@color/yellow"
-                        android:textSize="20sp" />
-
-                </RelativeLayout>
+                        android:textColor="#F8A933"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/rrOnway"
-                    android:layout_alignRight="@+id/ivBuy"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="4dp"
-                    android:text="Onway"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:layout_gravity="center"
+                    android:text="On Way"
+                    android:textColor="#F8A933" />
+            </LinearLayout>
 
-            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="50dp">
+
+                    <TextView
+                        android:id="@+id/tvDelivered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:text="0"
+                        android:textColor="@color/dark_green"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Delivered"
+                    android:textColor="@color/dark_green" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="50dp">
+
+                    <TextView
+                        android:id="@+id/tvCancelled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:text="0"
+                        android:textColor="#FA3B2D"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Cancelled"
+                    android:textColor="#FA3B2D" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -3,99 +3,123 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/yellow">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/backPress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:src="@drawable/arrow_back_icon" />
+
+            <TextView
+                android:id="@+id/tvAppName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.8"
+                android:gravity="center_vertical"
+                android:text="Contact us"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/llCall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/tvContact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contact us"
+            android:text="Contact with Phone"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/toolbar"
-    android:id="@+id/llCall"
-    android:padding="5dp"
-    android:layout_marginTop="10dp"
-    android:orientation="vertical"
-    >
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Contact with Phone"
-    android:textSize="17sp"
-    android:textStyle="bold"
-    android:textColor="@color/black"
-    android:id="@+id/tvContact"
-    />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvContact"
-        android:layout_marginStart="5dp"
-        android:id="@+id/tvCall"
-        android:drawableLeft="@drawable/phone"
-        android:text="+91963XXX6501"
-        android:layout_margin="2dp"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-       />
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/phone_contact"
-    android:layout_alignParentEnd="true"
-    android:id="@+id/ivContact"
-    android:padding="8dp"
-    android:layout_marginRight="10dp"
-    android:background="@drawable/buttton_call"
-    />
-</RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvCall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvContact"
+            android:layout_margin="2dp"
+            android:layout_marginStart="5dp"
+            android:drawableLeft="@drawable/phone"
+            android:drawablePadding="10dp"
+            android:text="+91963XXX6501"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/ivContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/buttton_call"
+            android:padding="8dp"
+            android:src="@drawable/phone_contact" />
+    </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/llEmail"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/llCall"
-        android:id="@+id/llEmail"
-        android:orientation="vertical"
-         android:padding="5dp"
-        >
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contact with Email"
-            android:textSize="17sp"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:id="@+id/tvEmail"
-            />
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
         <TextView
+            android:id="@+id/Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvEmail"
             android:layout_marginStart="5dp"
             android:drawableLeft="@drawable/email_icon"
-            android:text="mailto@gmail.com"
             android:padding="3dp"
+            android:drawablePadding="10dp"
+            android:text="mailto@gmail.com"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            android:id="@+id/Email"
-       />
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/gmail_ic"
-    android:layout_marginRight="10dp"
-    android:layout_alignParentEnd="true"
-    android:background="@drawable/buttton_call"
-    android:id="@+id/ivEmail"
-    android:padding="8dp"/>
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/ivEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/buttton_call"
+            android:padding="8dp"
+            android:src="@drawable/gmail_ic" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="com.google.android.gm.permission.WRITE_GMAIL" />
     <uses-permission android:name="com.google.android.gm.permission.AUTO_SEND" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
@@ -111,11 +112,25 @@
             android:name=".RatingActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ContactActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ContactActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".DiscountedProductDescription"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PrivacyPolicyActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".DiscountedProductDescription"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".RecentProductDescription"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CartProductDescription"
+                  android:screenOrientation="portrait"/>
+    <activity android:name=".FavoriteProductDescription"
+        android:screenOrientation="portrait"/>
 
         <service
             android:name=".MyFirebaseMessagingService"

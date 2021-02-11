@@ -28,6 +28,7 @@ public class OrderHistoryDetailsActivity extends AppCompatActivity {
         items = (ArrayList<OrderItems>) in.getSerializableExtra("item");
         
         for(OrderItems o : items) {
+
             Log.e("items : " , "==>" + o);
             adapter = new OrderDetailAddCommentAdapter(this, items);
             binding.rvOrderDetails.setAdapter(adapter);

@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardElevation="7dp"
-        app:cardCornerRadius="12dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="7dp">
 
         <ImageView
             android:id="@+id/ivCancel"
@@ -21,26 +21,28 @@
             android:layout_gravity="end"
             android:layout_marginTop="-3dp"
             android:src="@drawable/cancel_icon"
-            android:visibility="gone"/>
+            android:visibility="visible" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="7dp">
+            android:padding="10dp"
+            android:weightSum="1">
 
             <ImageView
                 android:id="@+id/productImage"
-                android:layout_width="100dp"
-                android:layout_height="120dp"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:scaleType="fitXY"
+                android:layout_weight="0.3"
                 android:src="@drawable/j5" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.66"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/productImage"
                 android:orientation="vertical"
                 android:padding="5dp">
@@ -49,12 +51,11 @@
                     android:id="@+id/tvProductName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="3dp"
                     android:singleLine="true"
                     android:text="Name"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvProductPrice"
@@ -62,9 +63,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:text="Price"
-                    android:textColor="#C30006"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/dark_green"
+                    android:textSize="15sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -119,6 +119,6 @@
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

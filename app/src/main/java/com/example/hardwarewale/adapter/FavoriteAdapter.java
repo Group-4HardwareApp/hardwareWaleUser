@@ -59,7 +59,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         final Favorite favorite = favoriteList.get(position);
         Picasso.get().load(favorite.getImageUrl()).placeholder(R.drawable.default_photo_icon).into(holder.binding.productImage);
         holder.binding.tvProductName.setText("" + favorite.getName());
-        holder.binding.tvProductPrice.setText("₹" + favorite.getPrice());
+        holder.binding.tvProductPrice.setText("₹ " + favorite.getPrice());
         holder.binding.tvProductDescription.setText("" + favorite.getDescription());
 
         holder.binding.ivCancel.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                     View view = inflater.inflate(R.layout.alert_dialog, null);
                     ab.setView(view);
                     TextView tvtitleMsg = view.findViewById(R.id.tvTilteMsg);
-                    tvtitleMsg.setText("You want to this product from favourite");
+                    tvtitleMsg.setText("You want to remove this product from favourite");
 
                     CardView btnCancel = view.findViewById(R.id.btnCancel);
                     CardView btnOkay = view.findViewById(R.id.btnOkay);

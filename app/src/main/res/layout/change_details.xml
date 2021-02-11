@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="10dp"
-    app:cardElevation="10dp">
+    app:cardElevation="13dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,8 +28,8 @@
                     android:id="@+id/ivCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/close_icon"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/close_icon" />
 
                 <TextView
                     android:id="@+id/tvAppName"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:text="Name"
             android:textColor="@color/black"
             android:textSize="10dp" />
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_toRightOf="@+id/name"
             android:text="*"
             android:textColor="@color/red" />
@@ -186,7 +186,6 @@
             android:inputType="text"
             android:textColor="@color/black" />
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/btnChangedetails"
             android:layout_width="wrap_content"
@@ -194,10 +193,10 @@
             android:layout_below="@id/etAddress"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_marginEnd="20dp"
+            android:layout_margin="30dp"
             android:orientation="horizontal"
             app:cardBackgroundColor="@color/yellow"
+            app:cardCornerRadius="3dp"
             app:cardElevation="10dp">
 
             <LinearLayout
@@ -209,6 +208,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:padding="5dp"
                     android:paddingLeft="5dp"
                     android:text="Change Details"
                     android:textColor="@color/black" />

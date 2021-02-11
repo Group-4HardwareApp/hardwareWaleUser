@@ -71,8 +71,8 @@ public class FavoriteActivity extends AppCompatActivity {
                         adapter.setOnItemClicklistner(new FavoriteAdapter.OnRecyclerViewClick() {
                             @Override
                             public void onItemClick(Favorite favorite, int position) {
-                                Intent in = new Intent(FavoriteActivity.this, ProductDescriptionActivity.class);
-                                in.putExtra("favorite",favorite.getFavoriteId());
+                                Intent in = new Intent(FavoriteActivity.this, FavoriteProductDescription.class);
+                                in.putExtra("favorite",favorite);
                                 startActivity(in);
                             }
                         });

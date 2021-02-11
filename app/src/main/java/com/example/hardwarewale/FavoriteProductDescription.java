@@ -10,14 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.hardwarewale.adapter.RecentUpdateAdapter;
-import com.example.hardwarewale.adapter.ShowCommentAdapter;
 import com.example.hardwarewale.adapter.SliderAdapterExample;
 import com.example.hardwarewale.api.CartService;
 import com.example.hardwarewale.api.CommentService;
@@ -36,6 +33,7 @@ import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnima
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,33 +42,38 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DiscountedProductDescription extends AppCompatActivity {
+public class FavoriteProductDescription extends AppCompatActivity {
     ActivityProductDescriptionBinding binding;
     RecentUpdateAdapter adapter;
-    Product discount;
+    Cart cart1;
+    Product product;
     Favorite fav, favorite;
     FirebaseUser currentUser;
-    String userId, name, categoryId, shopkeeperId, productId, imageUrl, description, brand, productName;
-    Double price;
+    String id,userId,name,categoryId,shopkeeperId,productId,imageUrl,description,brand,productName;
+    Integer qtyInStock;
+    double price, discount;
     ArrayList<Cart> cartList;
     List<Favorite> favoriteList;
-    int flag = 0, flag1 = 0;
+    int flag = 0;
+    int flag1 = 0;
+
     private SliderAdapterExample sliderAdapterExample;
     InternetConnectivity connectivity = new InternetConnectivity();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProductDescriptionBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         Intent in = getIntent();
-        discount = (Product) in.getSerializableExtra("product");
-        //Log.e("discount","===>"+discount.getName());
-        Log.e("discounted name ","===>"+discount.getName());
 
-        if(discount!=null) {
+        favorite = (Favorite) in.getSerializableExtra("favorite");
+        id = favorite.getProductId();
+
+        Log.e("id==============",">>>>>>>>"+id);
+
+        if(favorite!=null) {
             productData();
-            setProductDetails();
             getFavoriteList();
             addProductToFvorite();
             getCartList();
@@ -78,12 +81,14 @@ public class DiscountedProductDescription extends AppCompatActivity {
             showSimilarProducts();
             viewRating();
         }
+
         binding.btnbuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DiscountedProductDescription.this, BuyProductActivity.class);
-                intent.putExtra("product", discount);
-                startActivity(intent);
+                Intent in = new Intent(FavoriteProductDescription.this, BuyProductActivity.class);
+                in.putExtra("product",product);
+                Log.e("IntentproductName","=====>"+product.getName());
+                startActivity(in);
             }
         });
 
@@ -95,6 +100,7 @@ public class DiscountedProductDescription extends AppCompatActivity {
         });
 
     }
+
 
     private void viewRating() {
         if (connectivity.isConnectedToInternet(this)) {
@@ -119,14 +125,14 @@ public class DiscountedProductDescription extends AppCompatActivity {
                             binding.tvViewReview.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent in = new Intent(DiscountedProductDescription.this, RatingActivity.class);
+                                    Intent in = new Intent(FavoriteProductDescription.this, RatingActivity.class);
                                     in.putExtra("commentList", commentList);
                                     startActivity(in);
                                 }
                             });
                         }
                     } else
-                        Toast.makeText(DiscountedProductDescription.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FavoriteProductDescription.this, "Error", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -139,7 +145,7 @@ public class DiscountedProductDescription extends AppCompatActivity {
     }
 
     private void calculateAverageRating(ArrayList<Comment> list) {
-        float average, user1 = 0L, user2 = 0L, user3 = 0L, user4 = 0L, user5 = 0L;
+        Long average, user1 = 0L, user2 = 0L, user3 = 0L, user4 = 0L, user5 = 0L;
         for (Comment comment : list) {
             if (comment.getRating() == 5) {
                 user5++;
@@ -164,17 +170,61 @@ public class DiscountedProductDescription extends AppCompatActivity {
     }
 
     private void productData() {
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        userId = currentUser.getUid();
-        productId = discount.getProductId();
-        name = discount.getName();
-        brand = discount.getBrand();
-        categoryId = discount.getCategoryId();
-        price = discount.getPrice();
-        shopkeeperId = discount.getShopkeeperId();
-        Log.e("Shop", "==>" + shopkeeperId);
-        imageUrl = discount.getImageUrl();
-        description = discount.getDescription();
+     //Show  Product Data
+        ProductService.ProductApi productDetailApi = ProductService.getProductApiInstance();
+        Call<Product> call1 = productDetailApi.viewProduct(id);
+        call1.enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if(response.code() == 200) {
+                    product = response.body();
+                    categoryId = product.getCategoryId();
+                    brand = product.getBrand();
+                    name = product.getName();
+                    discount = product.getDiscount();
+                    price = product.getPrice();
+                    description = product.getDescription();
+                    qtyInStock = product.getQtyInStock();
+                    imageUrl = product.getImageUrl();
+
+                    Log.e("product name", "====>" + product.getName());
+                    binding.tvProductName.setText("" + product.getName());
+                    binding.ivImage.setVisibility(View.GONE);
+                    binding.ivAddtoFavorite.setVisibility(View.GONE);
+                    binding.tvProductDiscount.setText("" + product.getDiscount() + "% Off");
+                    binding.tvBrand.setText("" + product.getBrand());
+                    binding.tvQuantity.setText("" + product.getQtyInStock());
+                    binding.tvProductDescription.setText("" + product.getDescription());
+
+                    binding.tvProductPrice.setText("" + product.getPrice());
+                    double dis = price * (discount / 100);
+                    double offerPrice = price - dis;
+                    binding.tvDiscountedPrice.setText("₹ " + offerPrice);
+                    sliderAdapterExample = new SliderAdapterExample(FavoriteProductDescription.this);
+                    binding.iv.setSliderAdapter(sliderAdapterExample);
+                    binding.iv.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                    binding.iv.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                    binding.iv.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+                    binding.iv.setIndicatorSelectedColor(Color.GREEN);
+                    binding.iv.setIndicatorMargin(1);
+                    binding.iv.setIndicatorUnselectedColor(Color.BLACK);
+                    binding.iv.setScrollTimeInSec(2);
+                    binding.iv.setOnIndicatorClickListener(new DrawController.ClickListener() {
+                        @Override
+                        public void onIndicatorClicked(int position) {
+
+                        }
+                    });
+
+                    renewItems(binding.getRoot());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+
+            }
+        });
     }
 
     private void getCartList() {
@@ -185,7 +235,7 @@ public class DiscountedProductDescription extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ArrayList<Cart>> call, Response<ArrayList<Cart>> response) {
                     cartList = response.body();
-                    String pId = discount.getProductId();
+                    String pId = cart1.getProductId();
                     for (Cart cart : cartList) {
                         if (pId.equals(cart.getProductId())) {
                             flag = 1;
@@ -205,10 +255,10 @@ public class DiscountedProductDescription extends AppCompatActivity {
         binding.btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (connectivity.isConnectedToInternet(DiscountedProductDescription.this)) {
+                if (connectivity.isConnectedToInternet(FavoriteProductDescription.this)) {
                     if (flag == 1) {
                         binding.tvAddToCart.setText("Already Added");
-                        Toast.makeText(DiscountedProductDescription.this, "Product Already Added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FavoriteProductDescription.this, "Product Already Added", Toast.LENGTH_SHORT).show();
                     } else {
                         Cart cart = new Cart(userId, categoryId, productId, name, price, brand, imageUrl, description, shopkeeperId);
                         CartService.CartApi api = CartService.getCartApiInstance();
@@ -218,7 +268,7 @@ public class DiscountedProductDescription extends AppCompatActivity {
                             public void onResponse(Call<Cart> call, Response<Cart> response) {
                                 if (response.isSuccessful()) {
                                     Cart c = response.body();
-                                    Toast.makeText(DiscountedProductDescription.this, "Product added", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(FavoriteProductDescription.this, "Product added", Toast.LENGTH_SHORT).show();
                                     binding.tvAddToCart.setText("Add to cart");
                                     flag = 1;
                                 }
@@ -231,7 +281,7 @@ public class DiscountedProductDescription extends AppCompatActivity {
                         });
                     }
                 } else
-                    Toast.makeText(DiscountedProductDescription.this, "Internet not connected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FavoriteProductDescription.this, "Internet not connected", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -245,7 +295,7 @@ public class DiscountedProductDescription extends AppCompatActivity {
                 public void onResponse(Call<List<Favorite>> call, Response<List<Favorite>> response) {
                     if (response.code() == 200) {
                         favoriteList = response.body();
-                        String pId = discount.getProductId();
+                        String pId = favorite.getProductId();
                         for (Favorite favorite : favoriteList) {
                             if (pId.equals(favorite.getProductId())) {
                                 flag1 = 1;
@@ -268,10 +318,10 @@ public class DiscountedProductDescription extends AppCompatActivity {
         binding.ivAddtoFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (connectivity.isConnectedToInternet(DiscountedProductDescription.this)) {
+                if (connectivity.isConnectedToInternet(FavoriteProductDescription.this)) {
                     if (flag1 == 1) {
                         binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_icon));
-                        Toast.makeText(DiscountedProductDescription.this, "Already added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FavoriteProductDescription.this, "Already added", Toast.LENGTH_SHORT).show();
                         addProductToFvorite();
                     } else {
                         final Favorite f = new Favorite(userId, categoryId, productId, name, price, brand, imageUrl, description, shopkeeperId);
@@ -284,13 +334,13 @@ public class DiscountedProductDescription extends AppCompatActivity {
                                     fav = response.body();
                                     binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_border_icon));
                                     binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_icon));
-                                    Toast.makeText(DiscountedProductDescription.this, "Product added successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(FavoriteProductDescription.this, "Product added successfully", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Favorite> call, Throwable t) {
-                                Toast.makeText(DiscountedProductDescription.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FavoriteProductDescription.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                                 Log.e("Error ", "===>" + t);
                             }
                         });
@@ -300,44 +350,9 @@ public class DiscountedProductDescription extends AppCompatActivity {
         });
     }
 
-    private void setProductDetails() {
-        binding.tvProductName.setText("" + discount.getName());
-        binding.tvProductPrice.setPaintFlags(binding.tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        binding.tvProductPrice.setText("₹ " + discount.getPrice());
-        binding.tvBrand.setText("" + discount.getBrand());
-
-        double discounts = discount.getDiscount();
-        int off = (int) discounts;
-        binding.tvProductDiscount.setText("" + off + "% Off");
-        binding.tvProductDescription.setText("" + discount.getDescription());
-        binding.tvQuantity.setText("" + discount.getQtyInStock());
-
-        double price = discount.getPrice();
-        double dis = price * (discounts / 100);
-        double offerPrice = price - dis;
-        binding.tvDiscountedPrice.setText("₹ " + offerPrice);
-
-        sliderAdapterExample = new SliderAdapterExample(this);
-        binding.iv.setSliderAdapter(sliderAdapterExample);
-        binding.iv.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        binding.iv.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        binding.iv.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-        binding.iv.setIndicatorSelectedColor(Color.YELLOW);
-        binding.iv.setIndicatorMargin(1);
-        binding.iv.setIndicatorUnselectedColor(Color.GRAY);
-        binding.iv.setScrollTimeInSec(2);
-        binding.iv.setOnIndicatorClickListener(new DrawController.ClickListener() {
-            @Override
-            public void onIndicatorClicked(int position) {
-
-            }
-        });
-        renewItems(binding.getRoot());
-    }
-
     private void showSimilarProducts() {
         if (connectivity.isConnectedToInternet(this)) {
-            productName = discount.getName();
+            productName = favorite.getName();
             ProductService.ProductApi api = ProductService.getProductApiInstance();
             Call<ArrayList<Product>> call = api.searchProductByName(productName);
             call.enqueue(new Callback<ArrayList<Product>>() {
@@ -345,19 +360,19 @@ public class DiscountedProductDescription extends AppCompatActivity {
                 public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
                     if (response.code() == 200) {
                         ArrayList<Product> productList = response.body();
-                        if (discount.getName() == null)
+                        if (favorite.getName() == null)
                             binding.tvNoSimilarProducts.setVisibility(View.VISIBLE);
                         else {
-                            adapter = new RecentUpdateAdapter(DiscountedProductDescription.this, productList);
+                            adapter = new RecentUpdateAdapter(FavoriteProductDescription.this, productList);
                             binding.rvSimilarProducts.setAdapter(adapter);
-                            binding.rvSimilarProducts.setLayoutManager(new LinearLayoutManager(DiscountedProductDescription.this, RecyclerView.HORIZONTAL, false));
+                            binding.rvSimilarProducts.setLayoutManager(new LinearLayoutManager(FavoriteProductDescription.this, RecyclerView.HORIZONTAL, false));
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
-                    Toast.makeText(DiscountedProductDescription.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FavoriteProductDescription.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     Log.e("Error : ", "==> " + t);
                 }
             });
@@ -365,17 +380,22 @@ public class DiscountedProductDescription extends AppCompatActivity {
     }
 
     public void renewItems(View view) {
+
         List<SliderItem> sliderItemList = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            SliderItem sliderItem = new SliderItem();
-            if (i == 1) {
-                sliderItem.setImageUrl(discount.getImageUrl());
-            } else if (i == 2) {
-                sliderItem.setImageUrl(discount.getSecondImageUrl());
-            } else if (i == 3) {
-                sliderItem.setImageUrl(discount.getThirdImageurl());
+        if (product.getImageUrl()!=null){
+            SliderItem sliderItem1=new SliderItem();
+            sliderItem1.setImageUrl(product.getImageUrl());
+            sliderItemList.add(sliderItem1);
+            if (product.getSecondImageUrl()!=null){
+                SliderItem sliderItem2=new SliderItem();
+                sliderItem2.setImageUrl(product.getSecondImageUrl());
+                sliderItemList.add(sliderItem2);
+                if (product.getThirdImageurl()!=null){
+                    SliderItem sliderItem3=new SliderItem();
+                    sliderItem3.setImageUrl(product.getThirdImageurl());
+                    sliderItemList.add(sliderItem3);
+                }
             }
-            sliderItemList.add(sliderItem);
         }
         sliderAdapterExample.renewItems(sliderItemList);
     }

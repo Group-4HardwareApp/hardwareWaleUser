@@ -12,11 +12,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.hardwarewale.R;
 import com.example.hardwarewale.api.CartService;
 import com.example.hardwarewale.bean.Cart;
+import com.example.hardwarewale.bean.OrderItems;
 import com.example.hardwarewale.databinding.CartItemListBinding;
 import com.example.hardwarewale.utility.InternetConnectivity;
 import com.squareup.picasso.Picasso;
@@ -31,6 +33,7 @@ public class BuyCartAdapter extends RecyclerView.Adapter<BuyCartAdapter.BuyCartV
     private OnRecyclerViewClick listener;
     Context context;
     ArrayList<Cart> cartList;
+    ArrayList<OrderItems> itemList;
     InternetConnectivity connectivity = new InternetConnectivity();
     ProgressDialog pd;
     TextView tvAmt;
@@ -104,11 +107,19 @@ public class BuyCartAdapter extends RecyclerView.Adapter<BuyCartAdapter.BuyCartV
             @Override
             public void onClick(View v) {
                 if (connectivity.isConnectedToInternet(context)) {
-                    final AlertDialog.Builder ab = new AlertDialog.Builder(context);
-                    ab.setMessage("Are you sure ? ");
-                    ab.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    final AlertDialog ab = new AlertDialog.Builder(context).create();
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.alert_dialog, null);
+                    ab.setView(view);
+
+                    TextView tvtitleMsg = view.findViewById(R.id.tvTilteMsg);
+                    tvtitleMsg.setText("You want to remove this product from cart");
+                    CardView btnCancel = view.findViewById(R.id.btnCancel);
+                    CardView btnOkay = view.findViewById(R.id.btnOkay);
+
+                    btnOkay.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
                             pd = new ProgressDialog(context);
                             pd.setTitle("Removing");
                             pd.setMessage("Please wait...");
@@ -124,6 +135,7 @@ public class BuyCartAdapter extends RecyclerView.Adapter<BuyCartAdapter.BuyCartV
                                         cartList.remove(position);
                                         pd.dismiss();
                                         notifyDataSetChanged();
+                                        ab.dismiss();
                                     }
                                 }
 
@@ -134,10 +146,10 @@ public class BuyCartAdapter extends RecyclerView.Adapter<BuyCartAdapter.BuyCartV
                             });
                         }
                     });
-                    ab.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                        public void onClick(View v) {
+                            ab.dismiss();
                         }
                     });
                     ab.show();

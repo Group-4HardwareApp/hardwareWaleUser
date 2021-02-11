@@ -19,7 +19,7 @@ import java.util.Calendar;
 public class BuyProductActivity extends AppCompatActivity {
     BuyProductScreenBinding binding;
     String brand, name, productId, imageUrl, shopkeeperId, categoryId, description;
-    Product product;
+    Product product,cart;
     Double price, tot, discount;
     Integer qty = 1, qtyInStock;
     int q;
@@ -32,71 +32,71 @@ public class BuyProductActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent in = getIntent();
         product = (Product) in.getSerializableExtra("product");
-
+        cart = product;
         binding.backPress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+        if(product!=null) {
+            name = product.getName();
+            imageUrl = product.getImageUrl();
+            description = product.getDescription();
+            shopkeeperId = product.getShopkeeperId();
+            productId = product.getProductId();
+            categoryId = product.getCategoryId();
+            brand = product.getBrand();
+            discount = product.getDiscount();
+            price = product.getPrice();
+            qtyInStock = product.getQtyInStock();
+            product.setQty(qty);
+            timestamp = Calendar.getInstance().getTimeInMillis();
 
-        name = product.getName();
-        imageUrl = product.getImageUrl();
-        description = product.getDescription();
-        shopkeeperId = product.getShopkeeperId();
-        productId = product.getProductId();
-        categoryId = product.getCategoryId();
-        brand = product.getBrand();
-        discount = product.getDiscount();
-        price = product.getPrice();
-        qtyInStock = product.getQtyInStock();
-        product.setQty(qty);
-        timestamp = Calendar.getInstance().getTimeInMillis();
+            Picasso.get().load(imageUrl).placeholder(R.drawable.default_photo_icon).into(binding.productImage);
+            binding.tvProductName.setText("" + name);
+            binding.tvProductPrice.setText("" + price);
+            binding.tvProductQty.setText("Available : " + qtyInStock);
+            binding.tvQty.getText().toString();
 
-        Picasso.get().load(imageUrl).placeholder(R.drawable.default_photo_icon).into(binding.productImage);
-        binding.tvProductName.setText("" + name);
-        binding.tvProductPrice.setText("" + price);
-        binding.tvProductQty.setText("Available : " + qtyInStock);
-        binding.tvQty.getText().toString();
+            binding.ivAdd.setColorFilter(getResources().getColor(R.color.dark_green));
+            binding.ivAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    q = Integer.parseInt(binding.tvQty.getText().toString());
+                    if (q < qtyInStock) {
+                        q++;
+                        binding.tvQty.setText("" + q);
+                        product.setQty(q);
+                    }
+                    double tot = price * q;
+                    product.setTotalAmt(tot);
+                }
+            });
 
-        binding.ivAdd.setColorFilter(getResources().getColor(R.color.dark_green));
-        binding.ivAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                q = Integer.parseInt(binding.tvQty.getText().toString());
-                if (q < qtyInStock) {
-                    q++;
-                    binding.tvQty.setText("" + q);
+            binding.ivSubrtact.setColorFilter(getResources().getColor(R.color.red));
+            binding.ivSubrtact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    q = Integer.parseInt(binding.tvQty.getText().toString());
+                    if (q > 1) {
+                        q--;
+                        binding.tvQty.setText("" + q);
+                    }
+                    double qun = (double) q;
                     product.setQty(q);
+                    tot = price * q;
+                    product.setTotalAmt(tot);
                 }
-                double tot = price * q;
-                product.setTotalAmt(tot);
-            }
-        });
-
-        binding.ivSubrtact.setColorFilter(getResources().getColor(R.color.red));
-        binding.ivSubrtact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                q = Integer.parseInt(binding.tvQty.getText().toString());
-                if (q > 1) {
-                    q--;
-                    binding.tvQty.setText("" + q);
+            });
+            binding.btnBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BuyProductActivity.this, PlaceProductActivity.class);
+                    intent.putExtra("p", product);
+                    startActivity(intent);
                 }
-                double qun = (double) q;
-                product.setQty(q);
-                tot = price * q;
-                product.setTotalAmt(tot);
-            }
-        });
-
-        binding.btnBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(BuyProductActivity.this, PlaceProductActivity.class);
-                intent.putExtra("p", product);
-                startActivity(intent);
-            }
-        });
+            });
+        }
     }
 }

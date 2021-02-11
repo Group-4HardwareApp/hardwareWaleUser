@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardElevation="10dp">
+    android:layout_margin="7dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="7dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,59 +14,59 @@
         android:weightSum="1">
 
         <ImageView
+            android:id="@+id/ivProductImage"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_weight="0.4"
-            android:src="@drawable/j5"
-            android:id="@+id/ivProductImage"/>
+            android:layout_weight="0.3"
+            android:src="@drawable/j5" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:paddingLeft="5dp"
             android:layout_marginLeft="15dp"
+            android:layout_weight="0.7"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Product Name"
+                android:layout_marginTop="5dp"
                 android:singleLine="true"
-                />
+                android:text="Product Name"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvProductPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1000"
-                android:layout_marginTop="5dp"
-                />
+                android:layout_marginTop="3dp"
+                android:text="Price"
+                android:textColor="@color/dark_green"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tvProductQty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
-                android:layout_marginTop="5dp"
-                />
+                android:layout_marginTop="3dp"
+                android:text="Quantity"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvAddComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add comment"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:drawablePadding="3dp"
-                android:drawableRight="@drawable/comment_icon"
                 android:layout_gravity="end"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"
-                />
+                android:drawableRight="@drawable/comment_icon"
+                android:text="Add comment"
+                android:drawablePadding="3dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

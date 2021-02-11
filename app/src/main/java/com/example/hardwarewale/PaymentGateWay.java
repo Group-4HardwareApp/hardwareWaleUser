@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,11 @@ public class PaymentGateWay extends Activity implements PaymentResultListener {
                 startPayment();
             }
         });
+
+        SpannableString content = new SpannableString("Privacy Policy");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        binding.txtPrivacyPolicy.setText(content);
+
         binding.txtPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -39,10 +39,9 @@
                 android:title="Contact us"
                 android:icon="@drawable/contact_us_icon"/>
             <item
-                android:id="@+id/menuCustomerSupport"
-                android:title="Customer Support"
-                android:icon="@drawable/contact_support"/>
-
+                android:id="@+id/menuPrivacyPolicy"
+                android:title="Privacy Policy"
+                android:icon="@drawable/privacy_icon"/>
             <item
                 android:id="@+id/menuLogout"
                 android:icon="@drawable/logout_icon"

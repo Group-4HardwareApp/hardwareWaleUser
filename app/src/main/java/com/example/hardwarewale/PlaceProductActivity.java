@@ -88,12 +88,17 @@ public class PlaceProductActivity extends AppCompatActivity {
         qty = product.getQty();
         Log.e("qty", "==>" + qty);
         qtyInStock = product.getQtyInStock();
-        discount = product.getDiscount();
         description = product.getDescription();
         imageUrl = product.getImageUrl();
+
         double price = product.getPrice();
         price1 = (long) price;
-        total = qty * price;
+        double discount = product.getDiscount();
+        int off = (int) discount;
+        double dis = price * (discount / 100);
+        final double offerPrice = price - dis;
+
+        total = qty * offerPrice;
 
         Calendar cdate = Calendar.getInstance();
         SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
@@ -146,7 +151,7 @@ public class PlaceProductActivity extends AppCompatActivity {
         });
 
         SpannableString content = new SpannableString("Change details");
-        content.setSpan(new UnderlineSpan(),0,content.length(),0);
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         binding.tvChangeDetails.setText(content);
 
         binding.tvChangeDetails.setOnClickListener(new View.OnClickListener() {

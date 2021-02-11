@@ -69,9 +69,6 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent in = getIntent();
         product = (Product) in.getSerializableExtra("product");
-        favorite = (Favorite) in.getSerializableExtra("favorite");
-        discount = (Product) in.getSerializableExtra("discount");
-   //     Log.e("discount","===>"+discount.getName());
 
         if(product!=null) {
             productData();
@@ -83,219 +80,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
             showSimilarProducts();
             viewRating();
         }
-        /*if(discount != null){
-            binding.ivImage.setVisibility(View.GONE);
-            binding.iv.setVisibility(View.VISIBLE);
-            binding.tvProductName.setText("" + discount.getName());
-            Log.e("discounted name ","====>"+discount.getName());
-            binding.tvProductPrice.setPaintFlags(binding.tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            binding.tvProductPrice.setText("₹ " + discount.getPrice());
-            binding.tvProductPrice.setPaintFlags(binding.tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            binding.tvProductPrice.setText("₹ " + discount.getPrice());
-            binding.tvBrand.setText("" + discount.getBrand());
 
-            double dis = discount.getDiscount();
-            int off = (int) dis;
-            binding.tvProductDiscount.setText("" + off + "% Off");
-            binding.tvProductDescription.setText("" + discount.getDescription());
-            binding.tvQuantity.setText("" + discount.getQtyInStock());
-            sliderAdapterExample = new SliderAdapterExample(this);
-            binding.iv.setSliderAdapter(sliderAdapterExample);
-            binding.iv.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-            binding.iv.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-            binding.iv.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-            binding.iv.setIndicatorSelectedColor(Color.YELLOW);
-            binding.iv.setIndicatorMargin(1);
-            binding.iv.setIndicatorUnselectedColor(Color.GRAY);
-            binding.iv.setScrollTimeInSec(2);
-            binding.iv.setOnIndicatorClickListener(new DrawController.ClickListener() {
-                @Override
-                public void onIndicatorClicked(int position) {
-
-                }
-            });
-            double price = product.getPrice();
-            double dis1 = price * (dis / 100);
-            double offerPrice = price - dis1;
-            binding.tvDiscountedPrice.setText("₹ " + offerPrice);
-            List<SliderItem> sliderItemList = new ArrayList<>();
-            for (int i = 1; i < 4; i++) {
-                SliderItem sliderItem = new SliderItem();
-                if (i == 1) {
-                    sliderItem.setImageUrl(discount.getImageUrl());
-                } else if (i == 2) {
-                    sliderItem.setImageUrl(discount.getSecondImageUrl());
-                } else if (i == 3) {
-                    sliderItem.setImageUrl(discount.getThirdImageurl());
-                }
-                sliderItemList.add(sliderItem);
-            }
-            sliderAdapterExample.renewItems(sliderItemList);
-
-            if (connectivity.isConnectedToInternet(this)) {
-                //comment
-                CommentService.CommentApi commentApi = CommentService.getCommentApiInstance();
-                Call<ArrayList<Comment>> call = commentApi.getCommentOfProduct(discount.getProductId());
-                call.enqueue(new Callback<ArrayList<Comment>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
-                        if (response.code() == 200) {
-                            final ArrayList<Comment> commentList = response.body();
-                            if (commentList.size() == 0) {
-                                binding.tvRating.setVisibility(View.GONE);
-                                binding.rl.setVisibility(View.GONE);
-                            } else {
-                                calculateAverageRating(commentList);
-                                SpannableString content = new SpannableString("View reviews");
-                                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                                binding.tvViewReview.setText(content);
-
-                                binding.tvRating.setVisibility(View.VISIBLE);
-                                binding.rl.setVisibility(View.VISIBLE);
-                                binding.tvViewReview.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent in = new Intent(ProductDescriptionActivity.this, RatingActivity.class);
-                                        in.putExtra("commentList", commentList);
-                                        startActivity(in);
-                                    }
-                                });
-                            }
-                        } else
-                            Toast.makeText(ProductDescriptionActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Comment>> call, Throwable t) {
-
-                    }
-                });
-                //get cart list
-                CartService.CartApi cartAPI = CartService.getCartApiInstance();
-                Call<ArrayList<Cart>> listCall = cartAPI.getCartProductList(userId);
-                listCall.enqueue(new Callback<ArrayList<Cart>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Cart>> call, Response<ArrayList<Cart>> response) {
-                        cartList = response.body();
-                        String pId = discount.getProductId();
-                        for (Cart cart : cartList) {
-                            if (pId.equals(cart.getProductId())) {
-                                flag = 1;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Cart>> call, Throwable t) {
-
-                    }
-                });
-                //Add to cart
-                if (flag == 1) {
-                    binding.tvAddToCart.setText("Already Added");
-                    Toast.makeText(ProductDescriptionActivity.this, "Product Already Added", Toast.LENGTH_SHORT).show();
-                } else {
-                    Cart cart = new Cart(userId, discount.getCategoryId(), discount.getProductId(), discount.getName(), discount.getPrice(), discount.getBrand(), discount.getImageUrl(), discount.getDescription(), discount.getShopkeeperId());
-                    CartService.CartApi api = CartService.getCartApiInstance();
-                    Call<Cart> call1 = api.saveProductInCart(cart);
-                    call1.enqueue(new Callback<Cart>() {
-                        @Override
-                        public void onResponse(Call<Cart> call, Response<Cart> response) {
-                            if (response.isSuccessful()) {
-                                Cart c = response.body();
-                                Toast.makeText(ProductDescriptionActivity.this, "Product added", Toast.LENGTH_SHORT).show();
-                                binding.tvAddToCart.setText("Add to cart");
-                                flag = 1;
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Cart> call, Throwable t) {
-
-                        }
-                    });
-                }
-                //similar products
-                ProductService.ProductApi api = ProductService.getProductApiInstance();
-                Call<ArrayList<Product>> call2 = api.searchProductByName(discount.getName());
-                call2.enqueue(new Callback<ArrayList<Product>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Product>> call, Response<ArrayList<Product>> response) {
-                        if (response.code() == 200) {
-                            ArrayList<Product> productList = response.body();
-                            if (discount.getName() == null)
-                                binding.tvNoSimilarProducts.setVisibility(View.VISIBLE);
-                            else {
-                                adapter = new RecentUpdateAdapter(ProductDescriptionActivity.this, productList);
-                                binding.rvSimilarProducts.setAdapter(adapter);
-                                binding.rvSimilarProducts.setLayoutManager(new LinearLayoutManager(ProductDescriptionActivity.this, RecyclerView.HORIZONTAL, false));
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
-                        Toast.makeText(ProductDescriptionActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        Log.e("Error : ", "==> " + t);
-                    }
-                });
-                //get Favourite list
-                FavoriteService.FavoriteApi favoriteApi = FavoriteService.getFavoriteApiInstance();
-                Call<List<Favorite>> call4 = favoriteApi.getFavorite(userId);
-                call4.enqueue(new Callback<List<Favorite>>() {
-                    @Override
-                    public void onResponse(Call<List<Favorite>> call, Response<List<Favorite>> response) {
-                        if (response.code() == 200) {
-                            favoriteList = response.body();
-                            String pId = discount.getProductId();
-                            for (Favorite favorite : favoriteList) {
-                                if (pId.equals(favorite.getProductId())) {
-                                    flag1 = 1;
-                                    binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_icon));
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Favorite>> call, Throwable t) {
-
-                    }
-                });
-                //add to favourite
-                if (flag1 == 1) {
-                    binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_icon));
-                    Toast.makeText(ProductDescriptionActivity.this, "Already added", Toast.LENGTH_SHORT).show();
-                    addProductToFvorite();
-                } else {
-                    final Favorite f = new Favorite(userId,discount.getCategoryId(), discount.getProductId(), discount.getName(), discount.getPrice(), discount.getBrand(), discount.getImageUrl(), discount.getDescription(), discount.getShopkeeperId() );
-                    final FavoriteService.FavoriteApi favoriteApi1 = FavoriteService.getFavoriteApiInstance();
-                    Call<Favorite> call3 = favoriteApi1.addFavorite(f);
-                    call3.enqueue(new Callback<Favorite>() {
-                        @Override
-                        public void onResponse(Call<Favorite> call, Response<Favorite> response) {
-                            if (response.code() == 200) {
-                                fav = response.body();
-                                binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_border_icon));
-                                binding.ivAddtoFavorite.setImageDrawable(getDrawable(R.drawable.favorite_icon));
-                                Toast.makeText(ProductDescriptionActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Favorite> call, Throwable t) {
-                            Toast.makeText(ProductDescriptionActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                            Log.e("Error ", "===>" + t);
-                        }
-                    });
-                }
-
-
-
-            } else
-                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
-        }//end of discount
-*/
         binding.btnbuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -357,7 +142,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     }
 
     private void calculateAverageRating(ArrayList<Comment> list) {
-        Long average, user1 = 0L, user2 = 0L, user3 = 0L, user4 = 0L, user5 = 0L;
+        float average, user1 = 0L, user2 = 0L, user3 = 0L, user4 = 0L, user5 = 0L;
         for (Comment comment : list) {
             if (comment.getRating() == 5) {
                 user5++;
@@ -548,7 +333,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         double price = product.getPrice();
         double dis = price * (discount / 100);
         double offerPrice = price - dis;
-        binding.tvDiscountedPrice.setText("₹ " + offerPrice);
+        binding.tvDiscountedPrice.setText(String.format("₹ "+"%.2f", offerPrice));
         renewItems(binding.getRoot());
     }
 
@@ -582,18 +367,22 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     }
 
     public void renewItems(View view) {
+
         List<SliderItem> sliderItemList = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            SliderItem sliderItem = new SliderItem();
-            if (i == 1) {
-                sliderItem.setImageUrl(product.getImageUrl());
-            } else if (i == 2) {
-                sliderItem.setImageUrl(product.getSecondImageUrl());
-            } else if (i == 3) {
-                sliderItem.setImageUrl(product.getThirdImageurl());
+        if (product.getImageUrl()!=null){
+            SliderItem sliderItem1=new SliderItem();
+            sliderItem1.setImageUrl(product.getImageUrl());
+            sliderItemList.add(sliderItem1);
+            if (product.getSecondImageUrl()!=null){
+                SliderItem sliderItem2=new SliderItem();
+                sliderItem2.setImageUrl(product.getSecondImageUrl());
+                sliderItemList.add(sliderItem2);
+                if (product.getThirdImageurl()!=null){
+                    SliderItem sliderItem3=new SliderItem();
+                    sliderItem3.setImageUrl(product.getThirdImageurl());
+                    sliderItemList.add(sliderItem3);
+                }
             }
-            sliderItemList.add(sliderItem);
         }
         sliderAdapterExample.renewItems(sliderItemList);
-    }
-}
+    }}

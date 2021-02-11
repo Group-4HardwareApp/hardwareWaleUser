@@ -39,7 +39,6 @@ public class BuyActivity extends AppCompatActivity {
     String currentUserId;
     BuyCartAdapter adapter;
     double total = 0;
-    ProgressDialog pd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,74 +78,6 @@ public class BuyActivity extends AppCompatActivity {
                         binding.tvAmt.setText("" + total);
                         Log.e("shopkeeper id", "==>" + c.getShopkeeperId());
                     }
-
-                    new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
-
-                        @Override
-                        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                            Toast.makeText(BuyActivity.this, "on Move", Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-
-                        @Override
-                        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                            Toast.makeText(BuyActivity.this, "on Swiped ", Toast.LENGTH_SHORT).show();
-                            //Remove swiped item from list and notify the RecyclerView
-                            final AlertDialog ab = new AlertDialog.Builder(BuyActivity.this).create();
-                            LayoutInflater inflater = (LayoutInflater) BuyActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            View view = inflater.inflate(R.layout.alert_dialog, null);
-                            ab.setView(view);
-
-                            TextView tvtitleMsg = view.findViewById(R.id.tvTilteMsg);
-                            tvtitleMsg.setText("You want to remove this product from buy cart");
-                            CardView btnCancel = view.findViewById(R.id.btnCancel);
-                            CardView btnOkay = view.findViewById(R.id.btnOkay);
-
-                            btnOkay.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pd = new ProgressDialog(BuyActivity.this);
-                                    pd.setTitle("Removing");
-                                    pd.setMessage("Please wait...");
-                                    pd.show();
-
-                                    final int position = viewHolder.getAdapterPosition();
-
-                                    Cart cart = updatedCartList.get(position);
-                                    Log.e("cart id", "===>" + cart.getCartId());
-                                    CartService.CartApi cartApi = CartService.getCartApiInstance();
-                                    Call<Cart> call = cartApi.removeProductFormCart(cart.getCartId());
-                                    call.enqueue(new Callback<Cart>() {
-                                        @Override
-                                        public void onResponse(Call<Cart> call, Response<Cart> response) {
-                                            Log.e("data", "========>" + response);
-                                            if (response.code() == 200) {
-                                                Cart c = response.body();
-                                                updatedCartList.remove(position);
-                                                pd.dismiss();
-                                                adapter.notifyDataSetChanged();
-                                                ab.dismiss();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Cart> call, Throwable t) {
-                                            Log.e("failed", "=========>" + t);
-                                        }
-                                    });
-
-                                }
-                            });
-                            btnCancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ab.dismiss();
-                                }
-                            });
-                            ab.show();
-                        }
-                    }).attachToRecyclerView(binding.rvBuy);
-
                 }
             }
 

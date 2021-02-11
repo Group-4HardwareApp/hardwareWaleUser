@@ -39,6 +39,7 @@ public class RecentUpdateAdapter extends RecyclerView.Adapter<RecentUpdateAdapte
          Product product = recentProductList.get(position);
          Picasso.get().load(product.getImageUrl()).placeholder(R.drawable.default_photo_icon).into(holder.binding.ivProductImage);
          holder.binding.tvProductName.setText("" + product.getName());
+         holder.binding.tvProductPrice.setTextColor(context.getResources().getColor(R.color.dark_green));
          holder.binding.tvProductPrice.setText("₹ " + product.getPrice());
     }
 

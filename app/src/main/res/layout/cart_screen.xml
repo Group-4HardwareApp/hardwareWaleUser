@@ -63,18 +63,21 @@
                 android:id="@+id/rvCartScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:overScrollMode="never"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/btnbuy"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_below="@id/rvCartScreen"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 app:cardBackgroundColor="@color/yellow"
-                app:cardElevation="10dp">
+                app:cardElevation="12dp"
+                app:cardCornerRadius="3dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

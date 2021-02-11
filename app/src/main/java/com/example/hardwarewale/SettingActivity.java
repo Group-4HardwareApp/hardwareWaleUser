@@ -89,7 +89,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnSave.setText("Update");
+        binding.tvBtnName.setText("Update");
 
         binding.civImage.setOnClickListener(new View.OnClickListener() {
             @Override

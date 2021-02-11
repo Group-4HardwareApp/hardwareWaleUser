@@ -191,21 +191,38 @@
                 android:inputType="text"
                 android:textColor="@color/black" />
 
-            <Button
+            <androidx.cardview.widget.CardView
                 android:id="@+id/btnSave"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/etAddress"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="60dp"
-                android:elevation="10dp"
-                android:background="@drawable/button_decoration"
-                android:text="Save"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:layout_margin="20dp"/>
+                android:layout_below="@id/etAddress"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:orientation="horizontal"
+                app:cardBackgroundColor="@color/yellow"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvBtnName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="Save"
+                        android:textSize="18sp"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
